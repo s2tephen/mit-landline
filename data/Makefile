@@ -16,7 +16,7 @@ mit_enrollment.csv: college_pop.csv mit_usug_fa14.csv
 	(echo 'total'; cat sum.csv) > total.csv && rm sum.csv
 	csvcut enr.csv -c enrollment | csvjoin - total.csv | tail -n +2 | sed -e 's/,/\//g' -e 's/^/scale=6;/' | bc > pct.csv
 	(echo 'percent'; cat pct.csv) > percentages.csv && rm pct.csv
-	csvjoin enr.csv percentages.csv > mit_enrollment.csv
+	csvjoin enr.csv percentages.csv | sed -e 's/^04000US//' > mit_enrollment.csv
 	rm estimates.csv errors.csv enr.csv total.csv percentages.csv
 
 mit_enrollment.json: mit_enrollment.csv

@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <title>MIT undergraduate enrollment by state, Fall 2014</title>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/underscore-min.js"></script>
+    <script src="js/raphael-min.js"></script>
+
+    <script src="js/states/states_packaged.js"></script>
+    <script src="js/states/states_options.js"></script>
+
+    <script src="js/landline.js"></script>
+    <script src="js/landline.stateline.js"></script>
+  </head>
+
+  <body>
+    <div id="landline_container"></div>
+    
+    <script>
+      $(function() {
+        $.getJSON('data/mit_enrollment.json', function(response) {
+          var data = response;
+          var map = new Landline.Stateline('#landline_container', 'states', options);
+
+          var color = function(enrolled) {
+            if (enrolled < 9) return 'rgb(254,240,217)';
+            if (enrolled < 17) return 'rgb(253,204,138)';
+            if (enrolled < 35) return 'rgb(252,141,89)';
+            if (enrolled < 105) return 'rgb(227,74,51)';
+            return 'rgb(179,0,0)';
+          };
+
+          _(data).each(function(ary, fips) {
+            map.style(fips, 'fill', color(ary[3]));
+          })
+
+          map.createMap();
+        });
+      });
+    </script>
+  </body>
+</html>
